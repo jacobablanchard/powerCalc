@@ -28,7 +28,6 @@ export function CostPlot(props: ICostPlot) {
       costs: calculateUsage(plan, props.powerUsage, props.startMonth),
     };
   });
-  console.log(costData);
   const data = allMonths.map((value, index) => {
     const costDataPerPlan = costData.reduce((previous, current) => {
       let planCost: Record<string, number> = {};
@@ -40,10 +39,9 @@ export function CostPlot(props: ICostPlot) {
     return { month: value, ...costDataPerPlan };
   });
 
-  console.log(data);
   return (
     <LineChart
-      width={1000}
+      width={900}
       height={300}
       data={data}
       margin={{ top: 5, right: 20, bottom: 20, left: 0 }}

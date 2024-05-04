@@ -4,6 +4,7 @@ import PowerUsageInput from "./PowerUsageInput";
 import type { PowerPlan } from "./PowerPlanInput/types";
 import PowerPlanDisplayAndInput from "./PowerPlanInput";
 import CostPlot from "./CostPlot";
+import CostTable from "./CostTable";
 
 interface IPowerCalcProps {}
 
@@ -21,6 +22,14 @@ const PowerCalc: React.FunctionComponent<IPowerCalcProps> = (props) => {
       TduBaseChargeCents: 300.0,
       TduVariableChargeCents: 20.3,
     },
+    {
+      name: "Power plan 200",
+      provider: "Frontier",
+      baseChargePerCycleCents: 100.111,
+      energyVariablePriceCents: 500.222,
+      TduBaseChargeCents: 300.0,
+      TduVariableChargeCents: 20.3,
+    },
   ]);
 
   return (
@@ -34,6 +43,11 @@ const PowerCalc: React.FunctionComponent<IPowerCalcProps> = (props) => {
       <hr></hr>
       <PowerPlanDisplayAndInput plans={powerPlans} setPlans={setPowerPlans} />
       <CostPlot
+        powerPlans={powerPlans}
+        powerUsage={powerUsage}
+        startMonth={month}
+      />
+      <CostTable
         powerPlans={powerPlans}
         powerUsage={powerUsage}
         startMonth={month}

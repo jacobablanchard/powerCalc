@@ -27,6 +27,7 @@ const PowerUsageInput: React.FC<{
                   ...props.powerUsage.slice(index + 1, props.powerUsage.length),
                 ]);
               }}
+              value={value}
             />
           </div>
         );
