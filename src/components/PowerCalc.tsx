@@ -11,7 +11,7 @@ interface IPowerCalcProps {}
 const PowerCalc: React.FunctionComponent<IPowerCalcProps> = (props) => {
   const [month, setMonth] = React.useState<Month>("January");
   const [powerUsage, setPowerUsage] = React.useState([
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    100, 100, 100, 100, 100, 300, 500, 1000, 500, 300, 100, 0,
   ]);
   const [powerPlans, setPowerPlans] = React.useState<PowerPlan[]>([
     {
