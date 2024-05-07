@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 
 export interface IPowerPlanCardProps {
   plan: PowerPlan;
+  onRemoveClick: () => void;
 }
 
 export function PowerPlanCard(props: IPowerPlanCardProps) {
@@ -29,7 +30,10 @@ export function PowerPlanCard(props: IPowerPlanCardProps) {
           <p>Electricity charge: {props.plan.energyVariablePriceCents} ¢</p>
         </CardContent>
         <CardFooter className="flex flex-row-reverse">
-          <Button variant={"outline"}> Remove</Button>
+          <Button variant={"outline"} onClick={() => props.onRemoveClick()}>
+            {" "}
+            Remove
+          </Button>
         </CardFooter>
       </Card>
     </div>

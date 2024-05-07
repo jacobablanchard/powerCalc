@@ -67,8 +67,15 @@ export function PowerPlanDisplayAndInput(
   return (
     <div>
       <div className="flex">
-        {props.plans.map((plan) => (
-          <PowerPlanCard plan={plan} />
+        {props.plans.map((plan, index) => (
+          <PowerPlanCard
+            plan={plan}
+            onRemoveClick={() =>
+              props.setPlans(
+                props.plans.filter((value, planIndex) => planIndex != index)
+              )
+            }
+          />
         ))}
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
