@@ -15,20 +15,20 @@ const PowerCalc: React.FunctionComponent<IPowerCalcProps> = (props) => {
   ]);
   const [powerPlans, setPowerPlans] = React.useState<PowerPlan[]>([
     {
-      name: "Power plan 100",
-      provider: "Frontier",
-      baseChargePerCycleCents: 100.111,
-      energyVariablePriceCents: 200.222,
-      TduBaseChargeCents: 300.0,
-      TduVariableChargeCents: 20.3,
+      name: "PTC 3 Month - Postpaid",
+      provider: "Payless Power",
+      baseChargePerCycleCents: 0,
+      energyVariablePriceCents: 8.1,
+      TduBaseChargeCents: 423.0,
+      TduVariableChargeCents: 4.5403,
     },
     {
       name: "Power plan 200",
-      provider: "Frontier",
-      baseChargePerCycleCents: 100.111,
-      energyVariablePriceCents: 500.222,
-      TduBaseChargeCents: 300.0,
-      TduVariableChargeCents: 20.3,
+      provider: "Octopus energy",
+      baseChargePerCycleCents: 1000,
+      energyVariablePriceCents: 8.5215,
+      TduBaseChargeCents: 423.0,
+      TduVariableChargeCents: 4.5403,
     },
   ]);
 
