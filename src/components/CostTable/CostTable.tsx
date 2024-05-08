@@ -43,20 +43,19 @@ export function CostTable(props: ICostTable) {
       </TableHeader>
       <TableBody>
         {costData.map((plan) => {
+          const totalPlanCost = plan.costs.reduce(
+            (runningTotal, current) => current + runningTotal,
+            0
+          );
           return (
             <TableRow>
               <TableCell className="sticky left-0 bg-background">{`${
                 plan.provider ?? ""
               }-${plan.name}`}</TableCell>
               {plan.costs.map((cost) => (
-                <TableCell>{cost}</TableCell>
+                <TableCell>{`\$${cost.toFixed(2)}`}</TableCell>
               ))}
-              <TableCell>
-                {plan.costs.reduce(
-                  (runningTotal, current) => current + runningTotal,
-                  0
-                )}
-              </TableCell>
+              <TableCell>{`\$${totalPlanCost.toFixed(2)}`}</TableCell>
             </TableRow>
           );
         })}

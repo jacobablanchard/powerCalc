@@ -66,7 +66,7 @@ export function PowerPlanDisplayAndInput(
 
   return (
     <div>
-      <div className="flex">
+      <div className="flex gap-2 flex-wrap">
         {props.plans.map((plan, index) => (
           <PowerPlanCard
             plan={plan}

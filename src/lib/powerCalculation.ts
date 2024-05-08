@@ -7,6 +7,7 @@ export const calculateUsage = (
   usage: number[],
   startMonth: Month
 ) => {
+  // Returns value in dollars
   return usage.map((monthsUsage) => {
     let monthsCost =
       powerPlan.TduBaseChargeCents +
@@ -19,6 +20,6 @@ export const calculateUsage = (
           previous + discountFunction(addMonth(startMonth, index), monthsUsage)
         );
       }, 0) ?? 0;
-    return monthsCost - totalDiscounts;
+    return (monthsCost - totalDiscounts) * 0.01;
   });
 };

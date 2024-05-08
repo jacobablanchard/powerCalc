@@ -48,8 +48,11 @@ export function CostPlot(props: ICostPlot) {
     >
       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
       <XAxis dataKey="month" />
-      <YAxis />
-      <Tooltip />
+      <Tooltip
+        formatter={(value, name, props) =>
+          `\$${Number.parseFloat(value.toString()).toFixed(2)}`
+        }
+      />
       {props.powerPlans.map((plan) => {
         return (
           <Line
@@ -59,6 +62,11 @@ export function CostPlot(props: ICostPlot) {
           />
         );
       })}
+      <YAxis
+        tickFormatter={(value, index) => {
+          return `\$${value}`;
+        }}
+      />
     </LineChart>
   );
 }
