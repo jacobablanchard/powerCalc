@@ -16,8 +16,9 @@ export interface ICostPlot {
   startMonth: Month;
   powerUsage: number[];
   powerPlans: PowerPlan[];
+  width: number;
 }
-export function CostPlot(props: ICostPlot) {
+function CostPlot(props: ICostPlot) {
   const allMonths = months.map((val, index) =>
     addMonth(props.startMonth, index)
   );
@@ -41,13 +42,16 @@ export function CostPlot(props: ICostPlot) {
 
   return (
     <LineChart
-      width={900}
+      width={props.width}
       height={300}
       data={data}
       margin={{ top: 5, right: 20, bottom: 20, left: 0 }}
     >
       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-      <XAxis dataKey="month" />
+      <XAxis
+        dataKey="month"
+        tickFormatter={(value: string) => value.slice(0, 3)}
+      />
       <Tooltip
         formatter={(value, name, props) =>
           `\$${Number.parseFloat(value.toString()).toFixed(2)}`
@@ -70,3 +74,52 @@ export function CostPlot(props: ICostPlot) {
     </LineChart>
   );
 }
+
+function CostPlotForSize(props: Omit<ICostPlot, "width">) {
+  return (
+    <div>
+      <div className="sm:hidden md:hidden lg:hidden xl:hidden">
+        <CostPlot
+          powerPlans={props.powerPlans}
+          powerUsage={props.powerUsage}
+          startMonth={props.startMonth}
+          width={400}
+        />
+      </div>
+      <div className="hidden sm:inline md:hidden ">
+        <CostPlot
+          powerPlans={props.powerPlans}
+          powerUsage={props.powerUsage}
+          startMonth={props.startMonth}
+          width={600}
+        />
+      </div>
+      <div className="hidden md:inline lg:hidden ">
+        <CostPlot
+          powerPlans={props.powerPlans}
+          powerUsage={props.powerUsage}
+          startMonth={props.startMonth}
+          width={750}
+        />
+      </div>
+      <div className="hidden lg:inline xl:hidden ">
+        <CostPlot
+          powerPlans={props.powerPlans}
+          powerUsage={props.powerUsage}
+          startMonth={props.startMonth}
+          width={975}
+        />
+      </div>
+      <div className="hidden xl:inline">
+        <CostPlot
+          powerPlans={props.powerPlans}
+          powerUsage={props.powerUsage}
+          startMonth={props.startMonth}
+          width={1200}
+        />
+      </div>
+    </div>
+  );
+}
+
+export { CostPlotForSize as CostPlot };
