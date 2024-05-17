@@ -5,7 +5,6 @@ import type { PowerPlan } from "./PowerPlanInput/types";
 import PowerPlanDisplayAndInput from "./PowerPlanInput";
 import CostPlot from "./CostPlot";
 import CostTable from "./CostTable";
-import Footer from "./Footer";
 
 interface IPowerCalcProps {}
 
@@ -53,7 +52,6 @@ const PowerCalc: React.FunctionComponent<IPowerCalcProps> = (props) => {
         powerUsage={powerUsage}
         startMonth={month}
       />
-      <Footer />
     </div>
   );
 };
