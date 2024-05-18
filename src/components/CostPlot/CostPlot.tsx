@@ -56,6 +56,7 @@ function CostPlot(props: ICostPlot) {
         formatter={(value, name, props) =>
           `\$${Number.parseFloat(value.toString()).toFixed(2)}`
         }
+        contentStyle={{ backgroundColor: "hsl(var(--background))" }}
       />
       {props.powerPlans.map((plan) => {
         return (
