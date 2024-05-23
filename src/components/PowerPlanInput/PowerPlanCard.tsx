@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 export interface IPowerPlanCardProps {
   plan: PowerPlan;
   onRemoveClick: () => void;
+  onEditClick: () => void;
 }
 
 export function PowerPlanCard(props: IPowerPlanCardProps) {
@@ -29,9 +30,11 @@ export function PowerPlanCard(props: IPowerPlanCardProps) {
           <p>Base charge: {props.plan.baseChargePerCycleCents} ¢</p>
           <p>Electricity charge: {props.plan.energyVariablePriceCents} ¢</p>
         </CardContent>
-        <CardFooter className="flex flex-row-reverse">
+        <CardFooter className="flex justify-between">
+          <Button variant={"outline"} onClick={() => props.onEditClick()}>
+            Edit
+          </Button>
           <Button variant={"outline"} onClick={() => props.onRemoveClick()}>
-            {" "}
             Remove
           </Button>
         </CardFooter>

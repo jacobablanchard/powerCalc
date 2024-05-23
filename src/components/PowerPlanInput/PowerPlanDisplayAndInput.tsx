@@ -29,11 +29,13 @@ import { z } from "zod";
 
 const formSchema = z.object({
   provider: z.string().min(2).max(50),
-  planName: z.string().min(2).max(50),
+  name: z.string().min(2).max(50),
   baseChargePerCycleCents: z.coerce.number().positive(),
   energyVariablePriceCents: z.coerce.number().positive(),
-  tduBaseChargePerCycleCents: z.coerce.number().positive(),
-  tduEnergyVariablePriceCents: z.coerce.number().positive(),
+  TduBaseChargeCents: z.coerce.number().positive(),
+  TduVariableChargeCents: z.coerce.number().positive(),
+  _edit: z.boolean().default(false),
+  _planIndex: z.number(),
 });
 
 export interface IPowerPlanDisplayAndInputProps {
@@ -50,17 +52,24 @@ export function PowerPlanDisplayAndInput(
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    props.setPlans([
-      ...props.plans,
-      {
-        baseChargePerCycleCents: values.baseChargePerCycleCents,
-        energyVariablePriceCents: values.energyVariablePriceCents,
-        name: values.planName,
-        provider: values.provider,
-        TduBaseChargeCents: values.tduBaseChargePerCycleCents,
-        TduVariableChargeCents: values.tduEnergyVariablePriceCents,
-      },
-    ]);
+    const newPlan = {
+      baseChargePerCycleCents: values.baseChargePerCycleCents,
+      energyVariablePriceCents: values.energyVariablePriceCents,
+      name: values.name,
+      provider: values.provider,
+      TduBaseChargeCents: values.TduBaseChargeCents,
+      TduVariableChargeCents: values.TduVariableChargeCents,
+    };
+
+    if (values._edit) {
+      props.setPlans([
+        ...props.plans.slice(0, values._planIndex),
+        newPlan,
+        ...props.plans.slice(values._planIndex + 1),
+      ]);
+    } else {
+      props.setPlans([...props.plans, newPlan]);
+    }
     setOpen(false);
   }
 
@@ -75,13 +84,26 @@ export function PowerPlanDisplayAndInput(
                 props.plans.filter((value, planIndex) => planIndex != index)
               )
             }
+            onEditClick={() => {
+              form.reset({
+                ...plan,
+                _edit: true,
+                _planIndex: index,
+              });
+              setOpen(true);
+            }}
           />
         ))}
       </div>
+      <Button
+        onClick={() => {
+          form.form.reset({ _edit: false });
+          setOpen(true);
+        }}
+      >
+        + Add Plan
+      </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button>+ Add Plan</Button>
-        </DialogTrigger>
         <DialogContent className=" overflow-y-scroll max-h-screen">
           <DialogHeader>
             <DialogTitle>Add a plan</DialogTitle>
@@ -110,7 +132,7 @@ export function PowerPlanDisplayAndInput(
                 />
                 <FormField
                   control={form.control}
-                  name="planName"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Plan Name</FormLabel>
@@ -160,7 +182,7 @@ export function PowerPlanDisplayAndInput(
                 />
                 <FormField
                   control={form.control}
-                  name="tduBaseChargePerCycleCents"
+                  name="TduBaseChargeCents"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
@@ -178,7 +200,7 @@ export function PowerPlanDisplayAndInput(
                 />
                 <FormField
                   control={form.control}
-                  name="tduEnergyVariablePriceCents"
+                  name="TduVariableChargeCents"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>TDU charge per kW/h (in cents)</FormLabel>
