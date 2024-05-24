@@ -13,6 +13,13 @@ export default {
     },
     extend: {
       colors: {
+        cellGradient: {
+          0: "#FB0000",
+          1: "#FA7900",
+          2: "#FAF100",
+          3: "#89F900",
+          4: "#10F900",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
