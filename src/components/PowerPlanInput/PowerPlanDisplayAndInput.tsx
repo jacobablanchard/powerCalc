@@ -97,7 +97,7 @@ export function PowerPlanDisplayAndInput(
       </div>
       <Button
         onClick={() => {
-          form.form.reset({ _edit: false });
+          form.reset({ _edit: false });
           setOpen(true);
         }}
       >

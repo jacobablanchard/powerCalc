@@ -35,53 +35,49 @@ const PowerCalc: React.FunctionComponent<IPowerCalcProps> = (props) => {
     <div className="flex flex-col gap-3 mx-4">
       <div className="flex">
         <MonthSelector month={month} setMonth={setMonth}></MonthSelector>
-        <div className="flex flex-col">
-          <div className="flex">
-            <Button
-              onClick={() => {
-                window.localStorage.setItem("data", stringifyData());
-              }}
-            >
-              Save to browser
-            </Button>
-            <Button
-              onClick={() => {
-                const rawData = window.localStorage.getItem("data");
-                if (!rawData) {
-                  return;
-                }
-                const parsedData = JSON.parse(rawData) as SaveData;
-                setMonth(parsedData.startMonth);
-                setPowerPlans(parsedData.plans);
-                setPowerUsage(parsedData.powerUsage);
-              }}
-            >
-              Load from browser
-            </Button>
-          </div>
-          <div className="flex">
-            <Button
-              onClick={() => {
-                const blob = new Blob([stringifyData()], {
-                  type: "text/plain",
-                }); // the blob
-                var a = document.createElement("a");
-                a.download = "data.json";
-                a.href = window.URL.createObjectURL(blob);
-                a.click();
-                a.remove();
-              }}
-            >
-              Save to file
-            </Button>
-            <Button
-              onClick={() => {
-                inputFile.current!.click();
-              }}
-            >
-              Load from file
-            </Button>
-          </div>
+        <div className="grid grid-cols-2 gap-3">
+          <Button
+            onClick={() => {
+              window.localStorage.setItem("data", stringifyData());
+            }}
+          >
+            Save to browser
+          </Button>
+          <Button
+            onClick={() => {
+              const rawData = window.localStorage.getItem("data");
+              if (!rawData) {
+                return;
+              }
+              const parsedData = JSON.parse(rawData) as SaveData;
+              setMonth(parsedData.startMonth);
+              setPowerPlans(parsedData.plans);
+              setPowerUsage(parsedData.powerUsage);
+            }}
+          >
+            Load from browser
+          </Button>
+          <Button
+            onClick={() => {
+              const blob = new Blob([stringifyData()], {
+                type: "text/plain",
+              }); // the blob
+              var a = document.createElement("a");
+              a.download = "data.json";
+              a.href = window.URL.createObjectURL(blob);
+              a.click();
+              a.remove();
+            }}
+          >
+            Save to file
+          </Button>
+          <Button
+            onClick={() => {
+              inputFile.current!.click();
+            }}
+          >
+            Load from file
+          </Button>
         </div>
       </div>
       <PowerUsageInput
