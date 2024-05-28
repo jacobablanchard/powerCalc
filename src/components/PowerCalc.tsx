@@ -5,36 +5,85 @@ import type { PowerPlan } from "./PowerPlanInput/types";
 import PowerPlanDisplayAndInput from "./PowerPlanInput";
 import CostPlot from "./CostPlot";
 import CostTable from "./CostTable";
+import { Button } from "@/components/ui/button";
+
+interface SaveData {
+  startMonth: Month;
+  powerUsage: number[];
+  plans: PowerPlan[];
+}
 
 interface IPowerCalcProps {}
 
 const PowerCalc: React.FunctionComponent<IPowerCalcProps> = (props) => {
   const [month, setMonth] = React.useState<Month>("January");
   const [powerUsage, setPowerUsage] = React.useState([
-    100, 100, 100, 100, 100, 300, 500, 1000, 500, 300, 100, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ]);
-  const [powerPlans, setPowerPlans] = React.useState<PowerPlan[]>([
-    {
-      name: "PTC 3 Month - Postpaid",
-      provider: "Payless Power",
-      baseChargePerCycleCents: 0,
-      energyVariablePriceCents: 8.1,
-      TduBaseChargeCents: 423.0,
-      TduVariableChargeCents: 4.5403,
-    },
-    {
-      name: "Power plan 200",
-      provider: "Octopus energy",
-      baseChargePerCycleCents: 1000,
-      energyVariablePriceCents: 8.5215,
-      TduBaseChargeCents: 423.0,
-      TduVariableChargeCents: 4.5403,
-    },
-  ]);
+  const [powerPlans, setPowerPlans] = React.useState<PowerPlan[]>([]);
+  const inputFile = React.useRef<HTMLInputElement>(null);
+
+  const stringifyData = () => {
+    return JSON.stringify({
+      plans: powerPlans,
+      powerUsage: powerUsage,
+      startMonth: month,
+    } as SaveData);
+  };
 
   return (
     <div className="flex flex-col gap-3 mx-4">
-      <MonthSelector month={month} setMonth={setMonth}></MonthSelector>
+      <div className="flex">
+        <MonthSelector month={month} setMonth={setMonth}></MonthSelector>
+        <div className="flex flex-col">
+          <div className="flex">
+            <Button
+              onClick={() => {
+                window.localStorage.setItem("data", stringifyData());
+              }}
+            >
+              Save to browser
+            </Button>
+            <Button
+              onClick={() => {
+                const rawData = window.localStorage.getItem("data");
+                if (!rawData) {
+                  return;
+                }
+                const parsedData = JSON.parse(rawData) as SaveData;
+                setMonth(parsedData.startMonth);
+                setPowerPlans(parsedData.plans);
+                setPowerUsage(parsedData.powerUsage);
+              }}
+            >
+              Load from browser
+            </Button>
+          </div>
+          <div className="flex">
+            <Button
+              onClick={() => {
+                const blob = new Blob([stringifyData()], {
+                  type: "text/plain",
+                }); // the blob
+                var a = document.createElement("a");
+                a.download = "data.json";
+                a.href = window.URL.createObjectURL(blob);
+                a.click();
+                a.remove();
+              }}
+            >
+              Save to file
+            </Button>
+            <Button
+              onClick={() => {
+                inputFile.current!.click();
+              }}
+            >
+              Load from file
+            </Button>
+          </div>
+        </div>
+      </div>
       <PowerUsageInput
         powerUsage={powerUsage}
         setPowerUsage={setPowerUsage}
@@ -51,6 +100,22 @@ const PowerCalc: React.FunctionComponent<IPowerCalcProps> = (props) => {
         powerPlans={powerPlans}
         powerUsage={powerUsage}
         startMonth={month}
+      />
+      <input
+        type="file"
+        id="file"
+        ref={inputFile}
+        style={{ display: "none" }}
+        onChange={async (event) => {
+          if (!event.target.files) {
+            return;
+          }
+          const fileText = await event.target.files[0].text();
+          const data = JSON.parse(fileText) as SaveData;
+          setMonth(data.startMonth);
+          setPowerPlans(data.plans);
+          setPowerUsage(data.powerUsage);
+        }}
       />
     </div>
   );
