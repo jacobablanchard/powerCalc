@@ -5,11 +5,9 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -21,7 +19,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -60,7 +57,6 @@ export function PowerPlanDisplayAndInput(
       TduBaseChargeCents: values.TduBaseChargeCents,
       TduVariableChargeCents: values.TduVariableChargeCents,
     };
-
     if (values._edit) {
       props.setPlans([
         ...props.plans.slice(0, values._planIndex),
@@ -72,7 +68,6 @@ export function PowerPlanDisplayAndInput(
     }
     setOpen(false);
   }
-
   return (
     <div>
       <div className="flex gap-2 flex-wrap">
@@ -97,7 +92,7 @@ export function PowerPlanDisplayAndInput(
       </div>
       <Button
         onClick={() => {
-          form.reset({ _edit: false });
+          form.reset({ _edit: false, _planIndex: props.plans.length });
           setOpen(true);
         }}
       >
