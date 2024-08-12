@@ -11,6 +11,7 @@ import { months, type Month } from "../MonthSelector";
 import type { PowerPlan } from "../PowerPlanInput/types";
 import { calculateUsage } from "@/lib/powerCalculation";
 import { addMonth } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export interface ICostPlot {
   startMonth: Month;
@@ -77,6 +78,15 @@ function CostPlot(props: ICostPlot) {
 }
 
 function CostPlotForSize(props: Omit<ICostPlot, "width">) {
+  const [showChild, setShowChild] = useState(false);
+
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
+
+  if (!showChild) {
+    return null;
+  }
   return (
     <div>
       <div className="sm:hidden md:hidden lg:hidden xl:hidden">
